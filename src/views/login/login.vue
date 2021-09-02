@@ -23,18 +23,20 @@
                 </el-form-item>
 
                 <!-- 验证码 -->
-                <el-image :src="src" @click="test"></el-image>
+                <el-image :src="src" @click="getCaptcha"></el-image>
 
                 <!-- 验证码输入框 -->
                 <el-form-item label="验证码">
-                    <el-input v-model="form.code"></el-input>
+                    <el-input v-model="form.code"
+                    placeholder="请输入验证码"
+                    clearable></el-input>
                 </el-form-item>
 
 
                 <el-form-item>
                     <el-button type="primary" @click="onSubmit">登录</el-button>
                     <el-button>取消</el-button>
-                    <el-button @click="test">测试</el-button>
+                    <el-button @click="getCaptcha">测试</el-button>
 
                 </el-form-item>
             </el-form>
@@ -46,7 +48,7 @@
 </template>
 
 <script>
-    import {testAPI,login} from "@/api/user"
+    import {getCaptchaData,login} from "@/api/user"
 
     export default {
         name: 'login',
@@ -67,8 +69,8 @@
 
 
         created: function () {
-
-            this.test()
+            // 创建时请求验证码
+            this.getCaptcha()
 
         },
 
@@ -78,31 +80,38 @@
 
                 try {
                     const response = await login(this.form)
-                    console.log(response.data)
+                    const data = response.data
+                    console.log(data)
+                    if (data["code"] == 200) {
+                        //如果登录验证通过
+                        await this.$router.push("/index")
+                    }
 
+                    if (data["code"] == 500) {
+                        // 如果登录认证不通过
+                        // 弹出弹窗提示错误信息
+                        alert(data["msg"])
+
+                        // 清空密码栏以及验证码栏
+                        this.form.password = ''
+                        this.form.code = ''
+                        // 更新验证码
+                        await this.getCaptcha()
+                    }
                 } catch (e) {
-
                     console.log("login error")
-
                 }
 
             },
 
 
-            test: async function () {
-
-
+            getCaptcha: async function () {
                 try {
-
-                    const response = await testAPI()
-
+                    const response = await getCaptchaData()
                     this.src = "data:image/jpeg;base64,"+response.data["img"]
-
                     this.form.uuid = response.data["uuid"]
 
-
                 } catch (e) {
-
                     console.log("error")
 
                 }

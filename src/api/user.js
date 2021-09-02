@@ -1,5 +1,6 @@
 import request from '@/utils/request'
 
+// 调用登录接口
 export function login(data) {
     return request({
         url: '/login/submit',
@@ -8,13 +9,23 @@ export function login(data) {
     })
 }
 
-export function getCaptcha() {
+// 调用验证码接口
+export function getCaptchaData() {
 
     return request({
-        url: '/register/test',
+        url: '/kaptcha/getCode',
         method: 'get'
     })
 
+}
+
+// 调用新增用户接口
+export function addUserAPI(data) {
+    return request({
+        url: '/user/add',
+        method: 'post',
+        data
+    })
 }
 
 // 调用测试接口
