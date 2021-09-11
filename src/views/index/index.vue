@@ -1,7 +1,8 @@
 <template>
 
     <div>
-        <h1>Hello world</h1>
+        <div>hello world</div>
+        <div>{{this.$store.state.token}}</div>
     </div>
 
 

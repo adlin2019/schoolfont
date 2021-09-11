@@ -38,3 +38,12 @@ export function testAPI() {
 
 }
 
+// 调用test/test01接口
+export function requestToTest() {
+    return request({
+        url: '/test/test01',
+        method: 'get'
+    })
+
+}
+

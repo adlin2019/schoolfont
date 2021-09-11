@@ -36,7 +36,7 @@
                 <el-form-item>
                     <el-button type="primary" @click="onSubmit">登录</el-button>
                     <el-button>取消</el-button>
-                    <el-button @click="getCaptcha">测试</el-button>
+                    <el-button @click="register">注册</el-button>
 
                 </el-form-item>
             </el-form>
@@ -49,6 +49,7 @@
 
 <script>
     import {getCaptchaData,login} from "@/api/user"
+    import {setToken} from "@/utils/auth";
 
     export default {
         name: 'login',
@@ -83,8 +84,12 @@
                     const data = response.data
                     console.log(data)
                     if (data["code"] == 200) {
-                        //如果登录验证通过
-                        await this.$router.push("/index")
+                        // 如果登录验证通过
+                        // 将得到的token记录到store实例中
+                        const token = data["token"]
+                        setToken(token)
+                        // 然后重定向到index页面
+                        await this.$router.push("/test")
                     }
 
                     if (data["code"] == 500) {
@@ -116,8 +121,10 @@
 
                 }
 
+            },
 
-
+            register: function () {
+                this.$router.push('/addUser')
             }
         }
 

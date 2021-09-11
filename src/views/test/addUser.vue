@@ -34,7 +34,7 @@
 </template>
 
 <script>
-    import {addUserAPI, login} from "@/api/user"
+    import {addUserAPI} from "@/api/user"
 
     export default {
         name: 'addUser',
@@ -50,34 +50,13 @@
         },
 
         methods: {
-            onSubmit: async function () {
-
-                try {
-                    const response = await login(this.form)
-                    const data = response.data
-                    console.log(data)
-                    if (data["code"] == 500) {
-                        // 如果登录认证不通过
-                        // 弹出弹窗提示错误信息
-                        alert(data["msg"])
-
-                        // 清空密码栏以及验证码栏
-                        this.form.password = ''
-                        this.form.code = ''
-                        // 更新验证码
-                        await this.getCaptcha()
-                    }
-                } catch (e) {
-                    console.log("login error")
-                }
-
-            },
 
             addUser: async function(){
                 try {
                     const response = await addUserAPI(this.form)
                     const data = response.data
                     console.log(data)
+                    await this.$router.push("/")
                 } catch (e) {
                     console.log("error")
                 }

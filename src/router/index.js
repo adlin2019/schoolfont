@@ -5,6 +5,7 @@ import login from '@/views/login/login'
 import test from "@/views/test/test"
 import index from "@/views/index/index"
 import addUser from "@/views/test/addUser";
+import model2 from "@/views/test/model2";
 
 Vue.use(Router)
 
@@ -26,6 +27,12 @@ const routes = [
     {
         path: '/addUser',
         component: addUser
+    },
+
+    // 测试页面3
+    {
+        path: '/model2',
+        component: model2
     },
 
     // 主体页面
